@@ -48,3 +48,15 @@ const leaveQueue = (name, queue) => {
 };
 
 leaveQueue("Patrick", rideQueue);
+
+
+
+>> Provide another real-world example that you can model using a data structure.
+
+- A dictionary of words and definitions can be modelled using an object literal in JavaScript with key-value pairs, with the word as the key and the definition as the value. E.g. 'var dictionary = {"word1":"definition1","word2":"definition2"};'
+
+>> How would your data structure allow developers to access and manipulate the data?
+
+- To access the definition of a word, you simply say something like 'dictionary["word1"]'. 
+- To edit the definition they would reassign the value like 'dictionary["word1"] = "New definition"'.
+- To remove a word from the dictionary, you could say something like 'dictionary.remove("word1");'
