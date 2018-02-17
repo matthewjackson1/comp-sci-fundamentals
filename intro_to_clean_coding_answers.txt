@@ -1,0 +1,280 @@
+
+> In your own words, explain what clean code is and why it is important.
+
+
+A: Clean code is readable, maintainable and simple and is especially important to achieve when working in a team of developers on large-scale applications.
+
+
+> Read this article about Toyota and their use of bad code. Although you may not yet understand all of the topics discussed, think about another commonly used object that relies on computers and explain what would happen if the code was not to standard.
+
+A: The 4 lifts (elevators) at my office building rely on a computer programme to decide which lift you should take to get to your destination and also controls the movements of the lifts. If the code was not to standard, passengers could be taken to the wrong destinations, could be trapped inside the lifts, could get stuck in the closing doors and could rise or fall to quickly or too slowly.
+
+
+
+> Would you consider the following to be clean code? Explain why or why not. If not, refactor the code.
+
+
+FUNCTION do(x, y)               // Creating a new function
+  IF y = "F"                    // Check if y is equal "F"
+  SET z to (x−32) * (5/9)       // Formula to convert degrees fahrenheit to celsius
+  PRINT z                       // Print result
+  ELSE IF y = "C"               // If y not equal to "F", check if equal to "C"
+  SET z to x * 1.8000 + 32.00   // Formula to convert degrees celsius to fahrenheit
+  PRINT z                       // Print result
+  END IF
+END FUNCTION
+
+
+- Naming: the naming of the function and its variables is not descriptive so that they have to use a lot of comments (doesn't pass the squint test on that point).
+- Single responsibility principle - the function does back and forwards conversions from F to C
+- The formatting was not quite right for nesting
+- Overengineered - number of decimal places
+
+
+FUNCTION convertTemperatures (temperature, scale)
+	IF scale = "C"
+		CALL CelsiusToFarenheit WITH temperature
+	ELSE IF scale = "F"
+		CALL FarenheitToCelsius WITH temperature
+	END IF
+END FUNCTION
+
+FUNCTION celsiusToFarenheit (celsiusTemperature)
+	SET farenheitTemperature to celsiusTemperature * 1.8 + 32 
+  	PRINT farenheitTemperature
+END FUNCTION
+
+FUNCTION farenheitToCelsius (farenheitTemperature)
+	SET celsiusTemperature to (farenheitTemperature − 32) * (5/9)
+  	PRINT celsiusTemperature
+END FUNCTION
+
+
+I would consider this clean code, variables and function names are descriptive, not too complex, does one job 
+
+FUNCTION calcPercent(sum, total)
+  IF NOT(total = 0)
+      SET percentage to sum / total * 100
+  ELSE
+    PRINT "Sorry, cannot divide by 0"
+  END IF
+
+  PRINT percentage
+END FUNCTION
+
+
+Using pseudocode, refactor the code for the following examples using the principles you have learned in this checkpoint.
+
+a. The following function prints the subtotal for a customer's transaction and receives payment accordingly.
+
+FUNCTION checkOutCustomer(subTotal, discountRate, paymentType)
+    PRINT "Your total due is: " + subTotal * discountRate + (subTotal * tax)
+
+    IF paymentType = 'CASH' THEN
+        CALL getPayment RETURNING amount
+        PRINT "Change due: " + amount - subTotal * discountRate + (subTotal * tax)
+    ELSE IF paymentType = 'CREDIT CARD' THEN
+        CALL getPayment RETURNING amount
+        PRINT "Your credit card has been charged: " + subTotal * discountRate + (subTotal * tax)
+    END IF
+END FUNCTION
+
+
+My refactored version:
+
+
+FUNCTION checkOutCustomer(subTotal, discountRate, paymentType)
+    PRINT "Your total due is: " + subTotal * discountRate + (subTotal * tax)
+    CALL getTotal WITH subTotal, discountRate RETURNING total
+    CALL getPayment RETURNING amount
+    IF paymentType = 'CASH' THEN
+        PRINT "Change due: " + amount - total
+    ELSE IF paymentType = 'CREDIT CARD' THEN
+        PRINT "Your credit card has been charged: " + total
+    END IF
+END FUNCTION
+
+
+FUNCTION getTotal(subTotal, discountRate)
+   subTotal * discountRate + (subTotal * tax)
+END FUNCTION
+
+
+
+b. The following function checks out a book if there are no issues with the guest's account.
+
+FUNCTION checkoutBook(book, guest)
+  IF guest.accountActive THEN
+      IF NOT(guest.hasOverdueBooks) THEN
+          IF guest.outstandingFees = 0 THEN
+            APPEND book to guest.books
+            SET book.status to "Checked Out"
+            PRINT "Your books have been issued."
+          END IF
+      END IF
+  ELSE
+      PRINT "Unable to check out book."
+  END IF
+END FUNCTION
+
+
+My refactored version:
+
+FUNCTION checkoutBook(book, guest)
+	CALL isGuestEligible WITH guest
+	IF guest.canCheckout = true THEN
+		APPEND book to guest.books
+		SET book.status to "Checked Out"
+		PRINT "Your books have been issued."
+	END IF
+	ELSE
+    	PRINT "Unable to check out book."
+	END IF
+END FUNCTION
+
+FUNCTION isGuestEligible(guest)
+	IF guest.accountActive AND guest.outstandingFees = 0 AND NOT(guest.hasOverdueBooks) THEN
+		SET guest.canCheckout to true
+	ELSE
+		SET guest.canCheckout to false
+END FUNCTION
+
+(Not sure if it's acceptable for me to assume I can set guest.canCheckout, if it's not then you can just set a var as true or false and do the check on that.)
+
+
+c. The following class is a code snippet that should support the transactions a customer can perform at an ATM.
+
+CLASS BankAccount
+
+  FUNCTION displayBalance()
+     PRINT balance
+  END FUNCTION
+
+  FUNCTION deposit(amount)
+     SET balance to balance + amount
+  END FUNCTION
+
+  FUNCTION withdraw(amount)
+      IF balance > amount THEN
+        SET balance to balance - amount
+      END
+  END FUNCTION
+
+  FUNCTION creditCardOffer()
+      IF NOT(customer.hasCreditCard) THEN
+          CALL offerCreditCard
+      END
+  END FUNCTION
+
+  FUNCTION checkStatus()
+      IF NOT(customer.hasCheckingAccount) THEN
+          CALL offerCheckingAccount
+      END
+  END FUNCTION
+
+  ....
+  ....
+  ....
+
+END
+
+
+My version: This seems good already, nothing for me to add!
+
+
+
+#### Programming Questions
+
+> You may do the following problems in any language of your choice. Use the clean code principles you've learned in this section while writing the code.
+
+> 6. Square 
+Given an array of integers, find if the sum of the integers is a perfect square. If it is a perfect square, return the square root, otherwise return the sum.
+
+Example:
+
+[10,1,4,6,1,1,2] returns 5 because the square root of 25 is 5.
+[1,1] returns 2 because 2 is not a perfect square.
+The square root of 2 is approximately 1.414213562373095.
+
+
+let square = (numArray) => {
+	let getSum = (total, num) => {
+		return total + num;
+	};
+	let arraySum = numArray.reduce(getSum);
+	if (isSquare(arraySum)) {
+		return Math.sqrt(arraySum);
+	}
+	else {
+		return arraySum;
+	}
+	console.log(arraySum);
+};
+
+let isSquare = (n) => {
+    return n > 0 && Math.sqrt(n) % 1 === 0;
+};
+
+
+> 7. Duplicate 
+Given an array of integers, find if the array contains any duplicate elements. The function should return true if any value appears at least twice in the array, and false if every element is distinct.
+
+
+let isAlreadySeen = (testArray, testElement) => {
+		if (testArray.indexOf(testElement) !== -1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	};
+
+let hasDuplicateElements = (myArray) => {
+	let uniqueValues = [];
+
+	for (let i = 0; i < myArray.length; i++) {
+		let currentValue = myArray[i];
+		if (isAlreadySeen(uniqueValues, currentValue)) {
+			return true;
+		}
+		else {
+		uniqueValues.push(currentValue);
+		}
+	};
+	return false;
+}
+
+
+
+#### Extra Credit
+
+> 8. Anagram An anagram is a word, phrase, or name formed by rearranging the letters of another, for example, spar formed from rasp. Given two strings, stringOne and stringTwo, determine if stringOne is an anagram of stringTwo. Assume that the strings contain only lowercase letters so do not worry about case-sensitivity. Hint: Your first task will be to convert the strings to arrays.
+
+
+let splitWord = (word) => {
+	return word.split('');
+};
+
+
+let areArraysEqual = (arr1, arr2) => {
+	if (arr1.length != arr2.length) {
+		return false;
+	}
+	for (var i = 0; i < arr1.length; ++i) {
+    	if (arr1[i] !== arr2[i]) {
+    		return false;
+    	}
+  	}
+  	return true;
+};
+
+
+let isAnagram = (firstWord, secondWord) => {
+	let firstWordArray = splitWord(firstWord).sort();
+	console.log(firstWordArray);
+	let secondWordArray = splitWord(secondWord).sort();
+	console.log(secondWordArray);
+	return areArraysEqual(firstWordArray, secondWordArray);
+};
+
+isAnagram('blue','elub');
