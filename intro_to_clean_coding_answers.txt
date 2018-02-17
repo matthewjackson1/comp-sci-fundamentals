@@ -82,10 +82,9 @@ END FUNCTION
 
 My refactored version:
 
-
 FUNCTION checkOutCustomer(subTotal, discountRate, paymentType)
-    PRINT "Your total due is: " + subTotal * discountRate + (subTotal * tax)
     CALL getTotal WITH subTotal, discountRate RETURNING total
+    PRINT "Your total due is: " + total
     CALL getPayment RETURNING amount
     IF paymentType = 'CASH' THEN
         PRINT "Change due: " + amount - total
@@ -126,7 +125,6 @@ FUNCTION checkoutBook(book, guest)
 		APPEND book to guest.books
 		SET book.status to "Checked Out"
 		PRINT "Your books have been issued."
-	END IF
 	ELSE
     	PRINT "Unable to check out book."
 	END IF
@@ -179,7 +177,7 @@ CLASS BankAccount
 END
 
 
-My version: This seems good already, nothing for me to add!
+My version: This seems good already, nothing for me to add :/
 
 
 
