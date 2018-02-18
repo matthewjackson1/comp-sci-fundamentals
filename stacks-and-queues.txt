@@ -1,0 +1,90 @@
+#### Questions ####
+
+>> What is the main difference between a stack and a queue?
+
+- Stacks are processed in a last-in-first-out order, whereas queues are processed in a first-in-first out order
+
+>> What are the similarities between stacks and queues?
+
+- Both are 'non-primitive' data structures which let you deal with lists of prioritised entries.
+
+>> Imagine you are an engineer tasked with implementing the UNDO and REDO options in a word processor such as Microsoft Word. Which data structure would you use for each option and why?
+
+UNDO - A stack will work fine for this, as you can go back through your queue stepwise to undo operations.
+
+
+REDO - When things are undone (and popped from the stack) we could add them to another stack to enable redoing.
+
+
+I don't see any benefits to using a queue for this kind of operation, but perhaps I misunderstand.
+
+
+
+#### Programming Questions ####
+
+You may program the following question in any language of your choice. Before you begin coding, write out a plan as to how you will solve the question.
+
+>> Given a string, reverse it using a stack. For example, the string "Bloc!" should be converted to "!colB".
+
+DEF REVERSE(original)
+  CREATE a new stack
+  One by one push all characters of original to stack
+  ASSIGN an empty string to reversed
+  WHILE the stack is not empty
+    Pop characters from stack and concatenate them to reversed
+  END WHILE
+  RETURN reversed
+END DEF
+
+function reverseString(str) {
+	let stack = [];
+	let splitString = str.split( "" );
+	stack = stack.concat(splitString);
+	let reversed = "";
+	while (stack.length > 0) {
+		reversed = reversed.concat(stack.pop());
+	}
+	return reversed;
+}
+
+reverseString("Bloc!");
+
+>> Implement the delete functionality of a stack using one queue. Make a FIFO data structure mirror the functionality of a LIFO data structure.
+
+>> To delete an item, take all of the elements on the queue one at a time and put them at the end of the queue except for the last one which should be deleted and returned.
+
+
+CLASS Stack
+SET index to 0
+FUNCTION push(element)
+	INCREMENT index by 1
+	SET the value of the array at index 'position' to element
+END FUNCTION
+
+FUNCTION pop(element)
+	SET returnValue as the value at index position of array
+	SET the value at the index position of the array to null
+	DECREMENT index by 1
+	RETURN returnValue
+END FUNCTION
+END CLASS
+
+>> Fill in the methods for the following Queue so that it will work as expected (FIFO).
+
+
+CLASS QUEUE
+Set index to 0
+FUNCTION enqueue(element)
+	INCREMENT the index by 1
+	SET the value of the array at index 'position' to element
+END FUNCTION
+FUNCTION dequeue
+   SET the returnValue as the value at index 0 of the array
+   LEFT-SHIFT the array by 1 
+   RETURN returnValue
+END FUNCTION
+END CLASS
+
+
+
+
