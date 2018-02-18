@@ -1,0 +1,136 @@
+#### Exercises ####
+
+For exercises requiring code, you are free to use the language of your choice.
+
+Provide written answers for each and put them in linked-lists-answers.txt:
+
+>> What is spatial locality and how does it benefit performance?
+
+A: Storing array entries in consecutive memory locations, next to each other. Instead of requesting one memory location after another from RAM, the processor can retrieve all the array element data from a range of memory locations in one single request. Fewer requests to RAM means faster performance as it is a relatively expensive operation.
+
+>> What are some pros and cons of using linked lists over arrays?
+
+Pros:
+- Linked lists can be much larger than arrays because they do not require spatial locality in memory. The computer can use any available memory locations.
+- Linked lists do not contain empty placeholders whereas arrays can
+
+Cons: 
+- More computationally expensive to retrieve all the data in a linked list vs an array, a request must be done for each piece of data (no spatial locality).
+
+- Note: I didn't understand this line fully "Lacking spatial locality increases the likelihood that accessing an element in a linked list results in a cache-miss and more costly and time consuming the RAM lookup which follows"
+
+
+>> Think of an analogy that could be used to understand linked lists better. For example, "a linked list is like a train because..."
+
+A: A linked list is like a train because you can add train carriages and engines anywhere you like down the train, and these represent the data elements in a linked list. The cars are joined together by couplings which represent the pointers in a linked list. You can walk through the doors between train cars, in the same way as you can traverse a linked list, and your location on the train represents where you're currently at in the linked list.
+
+
+#### Programming Questions ####
+You may program the following questions in any language of your choice (JavaScript, Pseudocode, whatever you like).
+
+Before you begin coding, write out a plan as to how you will solve the question.
+
+The Linked List push function should take a value, create a node, and add it to the end of a list. Below is a push function for a singly linked list written in JavaScript. However, there is something wrong with it. Find the bug and fix the code.
+
+LinkedList.prototype.push = function(element) {
+ var node = {
+   value: element,
+   next: null
+ }
+
+ if(!this.head){
+   this.head = node;
+ }
+ else {
+   current = this.head;
+   while(current.next){
+   	current = current.next;
+   }
+   current.next = node;
+ }
+}
+
+Given an unsorted linked list, remove all duplicates from the linked list. Example Input: a -> c -> d -> d -> a Output: a -> c -> d
+
+function LinkedList () {
+    this.head = null;
+}
+
+LinkedList.prototype.removeDuplicates = function() {
+	 // Empty or a single element Linked List
+    if (!this.head || !this.head.next) {
+      console.log('No duplicates were found. Empty or a single element Linked List.');
+      return;
+    }
+
+    var p1;
+    var p2;
+    var nodes = {};
+
+    p1 = this.head;
+    p2 = p1.next;
+    nodes[p1.data] = true;
+
+    while (p2) {
+        var data = p2.data;
+        if (nodes[data]) {
+            p1.next = p2.next;
+        } else {
+            nodes[data] = true;
+            p1 = p2;
+        }
+        p2 = p2.next;
+    }
+};
+
+// Two nodes with duplicates
+var L2 = new LinkedList();
+L2.insertNodeAtTail(5);
+L2.insertNodeAtTail(5);
+
+L2.removeDuplicates();
+console.log(L2);
+
+
+Given an unsorted singly linked list, reverse it. Example Input: a -> b -> c -> d Output: d -> c -> b -> a
+
+LinkedList.prototype.reverse = function (){
+  // Empty or a single element Linked List
+  if(!this.head || !this.head.next) {
+  	  console.log('Not possible to reverse list with 1 or 0 elements');
+      return;
+
+  }
+
+  var nodes=[], 
+    current = this.head;
+  //storing all the nodes in an array
+  while(current){
+    nodes.push(current);
+    current = current.next;
+  }
+    
+  var reversedLL = new LinkedList();
+  
+  reversedLL.head = nodes.pop();
+  current = reversedLL.head;
+  
+  var node = nodes.pop();  
+  //make sure to make next of the newly inserted node to be null
+  //other wise the last node of your SLL will retain its old next.
+  while(node){
+     node.next = null;
+     current.next = node;
+     
+     current = current.next;
+     node = nodes.pop();
+  }
+  return reversedLL;
+}
+
+
+
+
+Resources:
+https://www.thatjsdude.com/interview/linkedList.html#singlyLinkedList
+https://js-algorithms.tutorialhorizon.com/2015/10/04/remove-duplicates-from-an-unsorted-linked-list/
