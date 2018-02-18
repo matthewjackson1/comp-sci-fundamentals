@@ -1,0 +1,73 @@
+#### Questions ####
+
+> Define and compare recursion and iteration.
+
+- **Recursion**: a procedure (e.g. function) that calls itself to repeat steps.
+- **Iteration**: a procedure that uses a logical loop to repeat steps (tends to be faster but harder to implement).
+
+> Name five algorithms that are commonly implemented by recursion.
+
+- Fibonacci
+- Depth of a binary tree
+- Greatest common divisor (Euclid's algorithm)
+- Factorial
+- Rank search
+
+> When should you use recursion, and when should you avoid recursion? Give examples for each.
+
+A: when the problem is already defined in recursive terms, it is easy to use recursion, for example the Fibonacci sequence and the factorial operation.  Recursion has a computational stack cost to it, if you're dealing with large numbers in the factorial operation for example it might be better to solve the problem iteratively. Factorial of 10000 will use 10000 stack frames in a recursive solution but only 1 in an iterative solution. Recursive solutions can also be harder to read, maintain and debug and so are generally avoided in practice.
+
+> Compare the recursive and iterative solutions to the three algorithms from the checkpoint (Factorial, Maximum, and Fibonacci). What is similar, and what is different?
+
+A: Recursive solutions always require a base case, or multiple, to be defined, while iterative solutions do not always require this. Both recursive and iterative solutions have repeated steps in them and fundamentally these steps do the same thing but the iterative versions use a loop while the recursive solutions achieve this through the function calling itself. 
+
+
+> Given a multi-dimensional collection (such as an array) where the number of dimensions is unknown, write a recursive algorithm to count the number of items in the entire collection.
+
+let myArray = [1,2,3,4,5,6,7,8,9,10];
+
+
+const countItems = (arr) => {
+
+	if (arr.length === 0) {
+		return 0;
+	}
+	else { 
+		return countItems(arr.slice(0, -1)) + 1;
+	}
+
+}
+
+
+countItems(myArray);
+
+> A palindrome is a word or phrase whose spelling is the same either direction (e.g., racecar). Write a recursive algorithm to determine if a given word or phrase is a palindrome.
+
+
+const isPalindrome = (str) => {
+    let strLen = str.length;
+    if (strLen === 0 || strLen === 1) {
+        return true;
+    }
+    
+    else if (str[0] === str[strLen - 1]) {
+        return isPalindrome(str.slice(1, strLen - 1));
+    }
+    
+    return false;
+};
+
+
+> Laura and Xander are going door-to-door around their block looking for their lost cat. Write a recursive algorithm showing one way they can visit every house on their block exactly once.
+
+Sorry I don't understand the question here and not sure where to ask on Slack.
+
+
+
+
+
+
+
+
+
+
