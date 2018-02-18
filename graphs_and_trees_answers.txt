@@ -1,0 +1,114 @@
+#### Questions ####
+
+> What is a binary tree and what makes it unique to other trees?
+
+A: A binary tree is a data structure consisting of nodes with values and the ability to point to adjacent nodes in the tree. In a binary tree each node can have up to 2 child nodes.
+
+> What is a heuristic?
+
+A: Guesses (or rules) an algorithm makes to solve problems more quickly but less accurately.
+
+> What is another problem besides the shortest-path problem that requires the use of heuristics?
+
+A: Searching
+
+> What is the difference between a depth-first search and a breadth-first search?
+
+A: In depth-first search we travel down and back up branches of the tree, in breadth-first search we look at each row of nodes in the tree before going to the next deeper row.
+
+> Explain in your own words what an undirected, a-cyclic, unweighted graph is.
+
+A: In an undirected graph, you can travel either way through a node. When the graph is a-cyclic there are no loops, meaning you cannot travel through the graph and end up visiting any node you've previously visited. Finally in an unweighted graph, it costs the same to travel over any edge between two nodes.
+
+> What kind of graph is a binary search tree?
+
+A: A-cyclic, directed, unweighted
+
+It's confusing me that we traverse back up the tree in a DFS algorithm, does that not violate the directedness of the graph?
+
+
+> Write a function that given a Binary Search Tree and a value, checks to see whether the value exists within the tree.
+> Example: The value 10 exists in the tree. The value 23 does not exist in the tree.
+
+
+binaryTree.prototype.contains = function(bst, value) {
+	
+	let doesContain = false;
+
+	function recurse(bst) {
+		if (bst.value === value) { 
+			doesContain = true;
+		}
+		else if (bst.left !== undefined && value < bst.value) {
+			recurse(bst.left);
+		}
+		else if (bst.right !== undefined && value > bst.value) {
+			recurse(bst.right);
+		}
+	}
+
+	recurse(this);
+	return doesContain
+
+};
+
+tree.contains(10) // should return true assuming tree is a populated instance of binaryTree class
+tree.contains(23) // should return false
+
+
+> Write a function that given a Binary Search Tree and two nodes, n1 and n2, find the distance between the two nodes.
+> Example: The distance between the nodes 4 and 10 is 4. The distance between the nodes 8 and 10 is 1. The distance between the nodes 1 and 14 is 4.
+
+We need to find the common ancestor of the nodes and sum the distance from each node to the common ancestor
+
+binaryTree.prototype.getDistance = function(root, node1, node2) {
+	if (root == null || node1 == null || node2 == null) {
+		return "Error, please enter valid tree and nodes"
+	}
+
+	function LCA(current, node1, node2) = {
+		if (current == null) {
+			return null;
+		}
+		else if (current == node1 || current == node2) {
+			return current;
+		}
+		let left = LCA(current.left, node1, node2);
+		let right = LCA(current.right, node1, node2);
+		if (left != null && right != null) {
+			return current;
+		}
+		return (left==null) ? right : left;
+	}
+
+	function getDepth(current, target) {
+		if (current == null) {
+			return -1;
+		}
+		else if (current == target) {
+			return 0;
+		}
+		let left = getDepth(current.left, target);
+		let right = getDepth(current.right, target);
+		if (left == -1 && right == -1) {
+			return -1;
+		}
+		return (left == -1) ? right + 1 : left + 1;
+	}
+
+	ancestor = LCA(root, node1, node2);
+	ancestorDepth = getDepth(root);
+	node1Depth =  getDepth(node1);
+	node2Depth = getDepth(node2);
+	return node1Depth + node2Depth - 2 * ancestorDepth;
+	};
+
+//I'm not sure if I've used the right syntax here - thinking I might need to be using 'this' keyword to get the root and nodes from the search tree but not sure.
+
+
+Resources used:
+https://initjs.org/implement-a-binary-search-tree-in-javascript-952a44ee7c26
+https://khan4019.github.io/front-end-Interview-Questions/bst.html
+https://gist.github.com/kanrourou/7c39c5af15bf20946e3b
+
+
