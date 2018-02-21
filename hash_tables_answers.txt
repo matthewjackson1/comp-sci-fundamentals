@@ -1,0 +1,99 @@
+#### Questions ####
+
+> What is a hash table?
+
+A: a data structure that uses a hash function to keep track of where data is put. Each piece of information to be stored has a name, which is called a 'key', it could be a person's name e.g. 'Penny'. Each key is matched to a piece of data, a 'value', like the person's phone number.
+
+> What is hashing?
+
+A: When you run a value through a hash function to generate a fixed-size alphanumeric string that is unique to that value.
+
+> How does a hash table store its data?
+
+A: The data for a hash table is stored in an array. To determine at what index of the array the data should be stored, the key name is run through a hash function.
+
+> How are hash tables and objects different?
+
+A: Hash tables are objects, but the data they hold best different to object data. You should use a hash table when you have to store a variable quantity of consistently formatted values, each with an identifier.
+
+> Determine if you would use a hash table or an object to store each of the following pieces of data:
+
+A list of pets with their unique name.
+HASH TABLE
+
+The name, age, and the birthday of your best friend.
+OBJECT
+
+The name and location of every company in a given city.
+HASH TABLE
+
+All of the books checked out from a library by a particular individual.
+HASH TABLE
+
+The primary and secondary phone numbers for a contact. 
+OBJECT
+
+
+> Build a system allowing a sales associate to enter a customer's name, address, and phone number into the system and look up customers by their phone numbers. Store this information in a hash table.
+
+const customers = {};
+
+const addCustomer = (name, address, phoneNumber) => {
+	customers[name] = { address: address, phoneNumber: phoneNumber }
+};
+
+const lookupByPhoneNum = (number) => {
+	for (i in customers) {
+		if (customers[i].phoneNumber === number) {
+			return i;
+		} 
+	}
+}
+
+addCustomer("Martin","123 Acacia Avenue","01912852269");
+lookupByPhoneNum("01912852269");
+
+> Build a system allowing a store owner to track their store's inventory using a hash table for storage.
+
+const stock = {};
+
+const updateStock = (item, currentStock) => {
+	stock[item] = currentStock;
+}
+
+const getStockLevel = (item) => {
+	return stock[item];
+}
+
+updateStock('Lawnmower',5);
+getStockLevel('Lawnmower');
+
+> Build a system allowing digital copies of newspapers to be entered and searched by publisher and publication date. Use hash tables to store the necessary data.
+
+newspapers = {}
+
+const addNewspaper = (name, publisher, pubDate) => {
+	newspapers[name] = { publisher: publisher, pubDate: pubDate };
+}
+
+const findPaperByPublisher = (publisher) => {
+	for (i in newspapers) {
+		if (newspapers[i].publisher === publisher) {
+			return i;
+		}
+	}
+}
+
+const findPaperByPubDate = (pubDate) => {
+	for (i in newspapers) {
+		if (newspapers[i].pubDate === pubDate) {
+			return i;
+		}
+	}
+}
+
+addNewspaper("Times","NY Press","01/01/1970");
+addNewspaper("Tribune","Chicago Press","04/07/1999");
+
+findPaperByPubDate("04/07/1999");
+findPaperByPublisher("NY Press");
