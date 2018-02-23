@@ -85,24 +85,23 @@ const isPalindrome = (str) => {
 
 const houses = { 1: {hasCat:false} , 2: {hasCat:false} , 8: {hasCat:true} , 4: {hasCat:false} };
 
-const findCat = (obj, key) => {
+const checklist = Object.keys(houses);
 
-    if (obj[key].hasCat === true) {
-        return key;
+const findCat = (obj, checklist) => {
+    
+    houseNum = checklist.splice(0,1);
+
+    if (obj[houseNum] && obj[houseNum].hasCat === true) {
+        return houseNum;
     }
-    else if (obj[key].hasCat === false) {
-        return findCat(obj, key + 1);
+    else if ((obj[houseNum] && obj[houseNum].hasCat === false) | !obj[houseNum]) {
+        return findCat(obj, checklist);
     }
 
     return null;
 }
 
-findCat(houses, 1);
-
-
-
-
-
+findCat(houses, checklist);
 
 
 
