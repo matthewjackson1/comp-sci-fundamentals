@@ -24,8 +24,31 @@ A: Recursive solutions always require a base case, or multiple, to be defined, w
 
 > Given a multi-dimensional collection (such as an array) where the number of dimensions is unknown, write a recursive algorithm to count the number of items in the entire collection.
 
-let myArray = [1,2,3,4,5,6,7,8,9,10];
+let myArray = [[1,2,3],[4,5],[6,7,8,[9,10]]];
 
+
+let count = 0
+const recursiveCount = (arr) => {
+    if (Array.isArray(arr)) {
+        for (let i=0; i<arr.length; i++) {
+            if (Array.isArray(arr[i])){
+                recursiveCount(arr[i]);
+            }
+            else {
+                count += 1;
+            }
+        }
+    }
+    else {
+        count += 1;
+    }
+    return count;
+}
+
+recursiveCount(myArray);
+
+
+//old solution below, which only counted a single dimension array's items
 
 const countItems = (arr) => {
 
@@ -37,7 +60,6 @@ const countItems = (arr) => {
 	}
 
 }
-
 
 countItems(myArray);
 
@@ -60,7 +82,23 @@ const isPalindrome = (str) => {
 
 > Laura and Xander are going door-to-door around their block looking for their lost cat. Write a recursive algorithm showing one way they can visit every house on their block exactly once.
 
-Sorry I don't understand the question here and not sure where to ask on Slack.
+
+const houses = { 1: {hasCat:false} , 2: {hasCat:false} , 8: {hasCat:true} , 4: {hasCat:false} };
+
+const findCat = (obj, key) => {
+
+    if (obj[key].hasCat === true) {
+        return key;
+    }
+    else if (obj[key].hasCat === false) {
+        return findCat(obj, key + 1);
+    }
+
+    return null;
+}
+
+findCat(houses, 1);
+
 
 
 
